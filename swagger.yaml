@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "APIs to cater for Back Office Operations functionality in OPERA Cloud.\
+  description: "APIs to  thus cater for Back Office Operations functionality in OPERA Cloud.\
     \ <br /><br /> A common BackOffice industry term is End of Day.\_ This closes\
     \ and balances each day's business activities. It reconciles guest folios and\
     \ processes credit card transactions. The End of Day routine rolls the business\
