@@ -8,14 +8,14 @@ info:
     \ Permissive License v 1.0 (http://oss.oracle.com/licenses/upl). Copyright c 2021\
     \ Oracle and/or its affiliates.</p>"
   version: "21.1"
-  title: "OPERA Cloud Activity API"
+  title: "Early Release OPERA Cloud Activity API"
   termsOfService: "https://www.oracle.com/legal/terms.html"
   contact:
     email: "hospitality_apis_ww_grp@oracle.com"
   license:
     name: "UPL"
     url: "https://opensource.org/licenses/upl"
-basePath: "/act/v1"
+basePath: "/act/v0"
 tags:
 - name: "Activity"
   description: "The Activity REST APIs allow you to view, create, update, and complete\
@@ -34,10 +34,6 @@ paths:
       description: "Use this API to retrieve activities for multiple hotels.  Results\
         \ can be narrowed down by your search criteria in the request message. <p><strong>OperationId:</strong>getActivitiesByMultipleHotelIds</p>"
       operationId: "getActivitiesByMultipleHotelIds"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - name: "completed"
         in: "query"
@@ -240,36 +236,6 @@ paths:
             $ref: "#/definitions/activitiesInfo"
         "204":
           description: "ActivitiesByMultipleHotelIds not found."
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
     delete:
       tags:
       - "Activity"
@@ -277,10 +243,6 @@ paths:
       description: "If you want to delete an activity, use this API.  You must know\
         \ the activity ID for the request. <p><strong>OperationId:</strong>deleteMultipleActivities</p>"
       operationId: "deleteMultipleActivities"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - name: "activityIds"
         in: "query"
@@ -336,36 +298,6 @@ paths:
               description: "Location of newly created resource"
           schema:
             $ref: "#/definitions/status"
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
   /activities/activitiesCompletion:
     post:
       tags:
@@ -374,10 +306,6 @@ paths:
       description: "Use this API to mark multiple Activities as completed in 1 request.\
         \  You must know the OPERA Activity ID's for this API. <p><strong>OperationId:</strong>postMultipleActivitiesCompletion</p>"
       operationId: "postMultipleActivitiesCompletion"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - in: "body"
         name: "activitiesToChange"
@@ -452,36 +380,6 @@ paths:
               description: "Location of newly created resource"
           schema:
             $ref: "#/definitions/status"
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
   /hotels/{hotelId}/activities:
     get:
       tags:
@@ -490,10 +388,6 @@ paths:
       description: "You can use this API to retrieve multiple Activities for a hotel,\
         \ you can narrow the results using different search criteria  <p><strong>OperationId:</strong>getActivities</p>"
       operationId: "getActivities"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - name: "hotelId"
         in: "path"
@@ -703,36 +597,6 @@ paths:
             $ref: "#/definitions/activitiesInfo"
         "204":
           description: "Activities not found."
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
     post:
       tags:
       - "Activity"
@@ -741,10 +605,6 @@ paths:
         \ would need to know the types of Activities a hotel accepts, such as Appointments,\
         \ TODO.  Use ListOfValues API's to find the available types at a hotel. <p><strong>OperationId:</strong>postActivities</p>"
       operationId: "postActivities"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - name: "hotelId"
         in: "path"
@@ -819,36 +679,6 @@ paths:
               description: "Location of newly created resource"
           schema:
             $ref: "#/definitions/status"
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
   /hotels/{hotelId}/activities/{activityId}:
     get:
       tags:
@@ -857,10 +687,6 @@ paths:
       description: "You can use this API to retrieve an Activity for a hotel, using\
         \ the OPERA Activity ID in the request. <p><strong>OperationId:</strong>getActivity</p>"
       operationId: "getActivity"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - name: "activityId"
         in: "path"
@@ -1084,36 +910,6 @@ paths:
             $ref: "#/definitions/activity"
         "204":
           description: "Activity not found."
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
     put:
       tags:
       - "Activity"
@@ -1121,10 +917,6 @@ paths:
       description: "Use this to update an existing Activity for a hotel.  You must\
         \ know the OPERA Activity ID for this API. <p><strong>OperationId:</strong>putActivities</p>"
       operationId: "putActivities"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - name: "activityId"
         in: "path"
@@ -1214,36 +1006,6 @@ paths:
               description: "Location of newly created resource"
           schema:
             $ref: "#/definitions/status"
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
     delete:
       tags:
       - "Activity"
@@ -1251,10 +1013,6 @@ paths:
       description: "Use this API to mark an Activity as completed.  You must know\
         \ the OPERA Activity ID for this API. <p><strong>OperationId:</strong>deleteActivities</p>"
       operationId: "deleteActivities"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - name: "activityId"
         in: "path"
@@ -1326,36 +1084,6 @@ paths:
               description: "Location of newly created resource"
           schema:
             $ref: "#/definitions/status"
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
   /hotels/{hotelId}/activities/{activityId}/activityCompletion:
     post:
       tags:
@@ -1364,10 +1092,6 @@ paths:
       description: "Use this API to mark one Activity as completed in 1 request. \
         \ You must know the OPERA Activity ID for this API. <p><strong>OperationId:</strong>postSingleActivityCompletion</p>"
       operationId: "postSingleActivityCompletion"
-      consumes:
-      - "application/json;charset=UTF-8"
-      produces:
-      - "application/json;charset=UTF-8"
       parameters:
       - name: "activityId"
         in: "path"
@@ -1445,36 +1169,6 @@ paths:
               description: "Location of newly created resource"
           schema:
             $ref: "#/definitions/status"
-        "400":
-          description: "Bad Request"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "401":
-          description: "Unauthorized"
-        "403":
-          description: "Forbidden"
-        "404":
-          description: "Resource not found"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "405":
-          description: "Method not allowed"
-        "406":
-          description: "Not acceptable."
-        "413":
-          description: "Request Entity Too Large"
-        "414":
-          description: "Request URI Too Large"
-        "415":
-          description: "Unsupported Media Type"
-        "500":
-          description: "System Error"
-          schema:
-            $ref: "#/definitions/exceptionDetailType"
-        "502":
-          description: "Bad Gateway"
-        "503":
-          description: "Service Unavailable"
 definitions:
   activitiesInfo:
     type: "object"
