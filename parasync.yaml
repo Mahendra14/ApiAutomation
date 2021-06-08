@@ -6,14 +6,14 @@ info:
     \ under the Universal Permissive License v 1.0 (http://oss.oracle.com/licenses/upl).\
     \ Copyright c 2021 Oracle and/or its affiliates.</p>"
   version: "21.1"
-  title: "Early Release OPERA Cloud Price Availability Rate Async API"
+  title: "OPERA Cloud Price Availability Rate Async API"
   termsOfService: "https://www.oracle.com/legal/terms.html"
   contact:
     email: "hospitality_apis_ww_grp@oracle.com"
   license:
     name: "UPL"
     url: "https://opensource.org/licenses/upl"
-basePath: "/par/async/v0"
+basePath: "/par/async/v1"
 tags:
 - name: "AvailabilityAsync"
   description: "The Availability Asynchronous module provides capability for an external\
@@ -31,6 +31,10 @@ paths:
       description: "A user can send various restrictions to OPERA by specifying restriction\
         \ details in the request. <p><strong>OperationId:</strong>postRestrictionsProcess</p>"
       operationId: "postRestrictionsProcess"
+      consumes:
+      - "application/json;charset=UTF-8"
+      produces:
+      - "application/json;charset=UTF-8"
       parameters:
       - name: "hotelId"
         in: "path"
@@ -89,6 +93,32 @@ paths:
               description: "Location of newly created resource"
           schema:
             $ref: "#/definitions/links"
+        "400":
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/exceptionDetailType"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "405":
+          description: "Method not allowed"
+        "406":
+          description: "Not acceptable."
+        "413":
+          description: "Request Entity Too Large"
+        "414":
+          description: "Request URI Too Large"
+        "415":
+          description: "Unsupported Media Type"
+        "500":
+          description: "System Error"
+          schema:
+            $ref: "#/definitions/exceptionDetailType"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable"
       x-interaction:
       - "async-polling"
   /externalSystems/{extSystemCode}/hotels/{hotelId}/restrictions/{requestId}:
@@ -99,6 +129,10 @@ paths:
       description: "Use this to check whether the restrictions sent have been processed.\
         \ <p><strong>OperationId:</strong>getRestrictions</p>"
       operationId: "getRestrictions"
+      consumes:
+      - "application/json;charset=UTF-8"
+      produces:
+      - "application/json;charset=UTF-8"
       parameters:
       - name: "hotelId"
         in: "path"
@@ -155,6 +189,32 @@ paths:
               x-example: "en-GB"
           schema:
             $ref: "#/definitions/restrictionsStatus"
+        "400":
+          description: "Bad Request"
+          schema:
+            $ref: "#/definitions/exceptionDetailType"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Resource not found"
+          schema:
+            $ref: "#/definitions/exceptionDetailType"
+        "405":
+          description: "Method not allowed"
+        "406":
+          description: "Not acceptable."
+        "415":
+          description: "Unsupported Media Type"
+        "500":
+          description: "System Error"
+          schema:
+            $ref: "#/definitions/exceptionDetailType"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable"
     head:
       tags:
       - "AvailabilityAsync"
@@ -162,6 +222,10 @@ paths:
       description: "Use this to check whether the restrictions sent have been processed.\
         \ <p><strong>OperationId:</strong>getRestrictionsProcessStatus</p>"
       operationId: "getRestrictionsProcessStatus"
+      consumes:
+      - "application/json;charset=UTF-8"
+      produces:
+      - "application/json;charset=UTF-8"
       parameters:
       - name: "requestId"
         in: "path"
@@ -243,6 +307,24 @@ paths:
               type: "string"
               description: "Location of newly created resource once the status of\
                 \ process run is Complete."
+        "400":
+          description: "Bad Request"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Resource not found"
+        "405":
+          description: "Method not allowed"
+        "406":
+          description: "Not acceptable."
+        "500":
+          description: "System Error"
+        "502":
+          description: "Bad Gateway"
+        "503":
+          description: "Service Unavailable"
 definitions:
   exceptionDetailType:
     type: "object"
