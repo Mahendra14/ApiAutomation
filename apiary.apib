@@ -1,77 +1,147 @@
 ---
 swagger: "2.0"
 info:
-  description: "APIs to cater for Master Data Configuration for Front Office Operations\
-    \ in OPERA Cloud.<br /><br /><p>This document and all content within is available\
-    \ under the Universal Permissive License v 1.0 (http://oss.oracle.com/licenses/upl).\
-    \ Copyright c 2021 Oracle and/or its affiliates.</p>"
+  description: "APIs to cater for Price and Rate Availability functionality in OPERA\
+    \ Cloud. <br /><br />Availability enables you to manage your room inventory by\
+    \ providing a detailed view of all available and sold rooms at a property. Some\
+    \ of the tasks you can perform include defining conditions for stay restrictions,\
+    \ setting room sell limits, and searching for and viewing room availability.<br\
+    \ /><br /><p>This document and all content within is available under the Universal\
+    \ Permissive License v 1.0 (http://oss.oracle.com/licenses/upl). Copyright c 2021\
+    \ Oracle and/or its affiliates.</p>"
   version: "21.1"
-  title: "Early Release OPERA Cloud Front Desk Master Data Management API"
+  title: "Early Release OPERA Cloud Price Availability Rate API"
   termsOfService: "https://www.oracle.com/legal/terms.html"
   contact:
     email: "hospitality_apis_ww_grp@oracle.com"
   license:
     name: "UPL"
     url: "https://opensource.org/licenses/upl"
-basePath: "/fof/config/v0"
+basePath: "/par/v0"
 tags:
-- name: "CashieringConfig"
-  description: "Cashiering configurations affect the control and management of financial\
-    \ transactions at your property. You can configure cashiering components for articles\
-    \ for sale, cancellation handling, deposits, folios, settlements, exchange rates,\
-    \ payment methods and so on."
+- name: "Availability"
+  description: "The Availability module provides APIs to fetch a properties room/rate\
+    \ availability, manage restrictions and hurdles.  Restrictions can be set for\
+    \ the entire property or for a rate category, rate code, room class or room type.\
+    \ <br /><br />Restrictions can also be set for a combination of these attributes,\
+    \ for example room class and rate code.  You can also fetch available guarantee\
+    \ policies for a property in this module."
 schemes:
 - "https"
 produces:
 - "application/json"
 paths:
-  /hotels/{hotelId}/exchangeRates/{currencyCode}:
+  /hotels/{hotelId}/guarantees:
     get:
       tags:
-      - "CashieringConfig"
-      summary: "Operation to fetch FuturePastExchangeRates."
-      description: "Operation to Fetch Future Past Exchange Rates. <p><strong>OperationId:</strong>getFuturePastExchangeRates</p>"
-      operationId: "getFuturePastExchangeRates"
+      - "Availability"
+      summary: "Get Reservation Guarantee "
+      description: "This API allows to Fetch Reservation Guarantee. The criteria can\
+        \ include the rate plan code, arrival date, guarantee code and the profile\
+        \ information.  <p><strong>OperationId:</strong>getReservationGuarantees</p>"
+      operationId: "getReservationGuarantees"
       parameters:
-      - name: "currencyCode"
-        in: "path"
-        description: "Currency Code in OPERA"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
       - name: "hotelId"
         in: "path"
-        description: "Unique ID of the hotel in OPERA"
+        description: "Unique ID that identifies a single hotel property."
         required: true
         type: "string"
         maxLength: 2000
         minLength: 1
-      - name: "exchangeTypes"
+      - name: "arrivalDate"
         in: "query"
-        description: "E-certificate conversion."
+        description: "Arrival Date of the guest."
         required: true
         type: "string"
-        uniqueItems: true
-        enum:
-        - "Cash"
-        - "Settlement"
-        - "Posting"
-        - "Check"
-        - "TACommission"
-        - "Membership"
-        - "Certificate"
-        x-example: "Cash"
-      - name: "dateRangeStart"
+        format: "date"
+      - name: "ratePlanCode"
+        in: "query"
+        description: "Rate Plan Code to find associated Guarantee Codes."
+        required: false
+        type: "string"
+      - name: "blockId"
+        in: "query"
+        description: "A unique identifying value assigned by the creating system.\
+          \ The ID attribute may be used to reference a primary-key value within a\
+          \ database or in a particular implementation."
+        required: false
+        type: "string"
+      - name: "reservationGuestId"
+        in: "query"
+        description: "A unique identifying value assigned by the creating system.\
+          \ The ID attribute may be used to reference a primary-key value within a\
+          \ database or in a particular implementation."
+        required: false
+        type: "string"
+      - name: "companyId"
+        in: "query"
+        description: "A unique identifying value assigned by the creating system.\
+          \ The ID attribute may be used to reference a primary-key value within a\
+          \ database or in a particular implementation."
+        required: false
+        type: "string"
+      - name: "travelAgentId"
+        in: "query"
+        description: "A unique identifying value assigned by the creating system.\
+          \ The ID attribute may be used to reference a primary-key value within a\
+          \ database or in a particular implementation."
+        required: false
+        type: "string"
+      - name: "sourceId"
+        in: "query"
+        description: "A unique identifying value assigned by the creating system.\
+          \ The ID attribute may be used to reference a primary-key value within a\
+          \ database or in a particular implementation."
+        required: false
+        type: "string"
+      - name: "groupId"
+        in: "query"
+        description: "A unique identifying value assigned by the creating system.\
+          \ The ID attribute may be used to reference a primary-key value within a\
+          \ database or in a particular implementation."
+        required: false
+        type: "string"
+      - name: "guaranteeCode"
+        in: "query"
+        description: "Guarantee Code should be supplied only for the code verification\
+          \ purpose, if the supplied code is valid for the rest of the criteria it\
+          \ will return the response with the Guarantee Code information."
+        required: false
+        type: "string"
+      - name: "calculateEstimateAmount"
+        in: "query"
+        description: "Determines whether estimated amount to be calculated or not"
+        required: false
+        type: "boolean"
+      - name: "startDate"
         in: "query"
         required: false
         type: "string"
         format: "date"
-      - name: "dateRangeEnd"
+      - name: "endDate"
         in: "query"
         required: false
         type: "string"
         format: "date"
+      - name: "numberOfRooms"
+        in: "query"
+        required: false
+        type: "integer"
+      - name: "numberOfAdults"
+        in: "query"
+        description: "Defines the number of Adults."
+        required: false
+        type: "integer"
+      - name: "numberOfChildren"
+        in: "query"
+        description: "Defines the number of Children."
+        required: false
+        type: "integer"
+      - name: "roomType"
+        in: "query"
+        description: "Room Type for the reservation"
+        required: false
+        type: "string"
       - name: "authorization"
         in: "header"
         description: "Bearer token that needs to be passed which is generated post\
@@ -104,39 +174,69 @@ paths:
         type: "string"
       responses:
         "200":
-          description: "Collection of exchange rates and their information."
+          description: "Response object to fetch reservation guarantees."
           examples:
             application/json:
-            - exchangeType:
-              - "Cash"
-              currency:
-                code: "AUD"
-              baseCurrency:
-                code: "USD"
-              beginDate: "2020-09-01"
-              buyRate: "1"
-              buyCommission: "0"
-              status: "Future"
-            - exchangeType:
-              - "Cash"
-              currency:
-                code: "AUD"
-              baseCurrency:
-                code: "USD"
-              beginDate: "2020-01-01 00:28:45.0"
-              buyRate: "1.34"
-              buyCommission: "0"
-              status: "Current"
-            - exchangeType:
-              - "Cash"
-              currency:
-                code: "AUD"
-              baseCurrency:
-                code: "USD"
-              beginDate: "2016-09-01 13:04:40.0"
-              buyRate: "5"
-              buyCommission: "5"
-              status: "Past"
+              resGuarantees:
+              - guaranteeCode: "4PM"
+                shortDescription:
+                  defaultText: "4PM Hold"
+                policyRequirements:
+                  phoneNumber: false
+                  address: false
+                  creditCard: false
+                  arrivalTime: false
+                  deposit: false
+                onHold: false
+                reserveInventory: true
+                orderSequence: "1"
+              - guaranteeCode: "GNON"
+                shortDescription:
+                  defaultText: "Group Non Deduct"
+                policyRequirements:
+                  phoneNumber: false
+                  address: false
+                  creditCard: false
+                  arrivalTime: false
+                  deposit: false
+                onHold: false
+                reserveInventory: false
+                orderSequence: "3"
+              - guaranteeCode: "GDED"
+                shortDescription:
+                  defaultText: "Group Deduct"
+                policyRequirements:
+                  phoneNumber: false
+                  address: false
+                  creditCard: false
+                  arrivalTime: false
+                  deposit: false
+                onHold: false
+                reserveInventory: true
+                orderSequence: "4"
+              - guaranteeCode: "CC"
+                shortDescription:
+                  defaultText: "Credit Card Guarantee"
+                policyRequirements:
+                  phoneNumber: false
+                  address: false
+                  creditCard: true
+                  arrivalTime: false
+                  deposit: false
+                onHold: false
+                reserveInventory: true
+                orderSequence: "6"
+              - guaranteeCode: "DEPR"
+                shortDescription:
+                  defaultText: "Deposit Required"
+                policyRequirements:
+                  phoneNumber: false
+                  address: false
+                  creditCard: false
+                  arrivalTime: true
+                  deposit: false
+                onHold: false
+                reserveInventory: true
           headers:
             Content-Language:
               type: "string"
@@ -144,94 +244,477 @@ paths:
               pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
               x-example: "en-GB"
           schema:
-            $ref: "#/definitions/futurePastExchangeRates"
+            $ref: "#/definitions/reservationGuaranteesPolicies"
         "204":
-          description: "FuturePastExchangeRates not found."
+          description: "ReservationGuarantees not found."
 definitions:
-  futurePastExchangeRates:
+  reservationGuaranteesPolicies:
+    type: "object"
+    properties:
+      resGuarantees:
+        description: "A collection of Guarantee Codes information with cancellation\
+          \ penalty and deposit policy information."
+        $ref: "#/definitions/guaranteePoliciesType"
+      links:
+        $ref: "#/definitions/links"
+      warnings:
+        $ref: "#/definitions/warningsType"
+    description: "Response object to fetch reservation guarantees."
+  guaranteePoliciesType:
     type: "array"
-    description: "Collection of exchange rates and their information."
+    description: "Guarantee Code information with cancellation penalty and deposit\
+      \ policy information."
     items:
-      $ref: "#/definitions/exchangeRateType"
+      $ref: "#/definitions/guaranteePolicyType"
     maxItems: 4000
-  exchangeRateType:
+  guaranteePolicyType:
     type: "object"
     properties:
-      hotelId:
+      guaranteeCode:
         type: "string"
-        description: "Property where exchange rate is set."
+        description: "Code assigned to the Guarantee."
         minLength: 0
         maxLength: 20
-      exchangeType:
-        type: "array"
-        description: "Type for exchange calculation."
-        items:
-          $ref: "#/definitions/currencyExchangeType"
-        maxItems: 4000
-      currency:
-        description: "Currency code."
-        $ref: "#/definitions/codeDescriptionType"
-      baseCurrency:
-        description: "Exchange rate base currency."
-        $ref: "#/definitions/codeDescriptionType"
-      beginDate:
-        type: "string"
-        format: "date-time"
-        description: "Date on which the rate is to become active."
-      buyRate:
-        type: "number"
-        description: "Buy Rate for foreign currency."
-      buyCommission:
-        type: "number"
-        description: "Percentage of the amount that is to be a commission for the\
-          \ currency buy operation."
-      sellRate:
-        type: "number"
-        description: "Sell Rate for foreign currency."
-      sellCommission:
-        type: "number"
-        description: "Percentage of the amount that is to be a commission for the\
-          \ currency sell operation."
-      comment:
-        type: "string"
-        description: "Comments associated with the exchange rate."
-        maxLength: 2000
-      status:
-        description: "Status past, present, or future."
-        $ref: "#/definitions/statusTypes"
-    description: "Exchange rate configuration type."
-  currencyExchangeType:
-    type: "string"
-    description: "E-certificate conversion."
-    enum:
-    - "Cash"
-    - "Settlement"
-    - "Posting"
-    - "Check"
-    - "TACommission"
-    - "Membership"
-    - "Certificate"
-  codeDescriptionType:
-    type: "object"
-    properties:
-      code:
-        type: "string"
-        description: "Code."
-        minLength: 0
-        maxLength: 20
+      shortDescription:
+        description: "Brief description of the Guarantee Code."
+        $ref: "#/definitions/translationTextType80"
+      policyRequirements:
+        description: "Specifies various policyRequirements for the guarantee code."
+        $ref: "#/definitions/guaranteeRequirementsType"
       description:
         type: "string"
-        description: "description."
+        description: "Description of the Guarantee Code."
         minLength: 0
         maxLength: 2000
-    description: "This contains a generic code and description information."
-  statusTypes:
+      paymentTypes:
+        description: "Specifies various payment types for the guarantee code."
+        $ref: "#/definitions/paymentTypesType"
+      onHold:
+        type: "boolean"
+        description: "If true indicates this Guarantee Code is used only to hold the\
+          \ inventory during reservation process."
+      reserveInventory:
+        type: "boolean"
+        description: "If true indicates inventory will be reserved/deducted when reservation\
+          \ uses this Guarantee Code."
+      orderSequence:
+        type: "number"
+        description: "Display Order sequence."
+      lateArrival:
+        type: "string"
+        description: "Represents the late arrival time."
+        maxLength: 2000
+      cancelPenalty:
+        type: "object"
+        description: "The CancelPenalty class defines the cancellation policy of the\
+          \ hotel facility."
+        properties:
+          deadline:
+            description: "Cancellation deadline, absolute or relative."
+            $ref: "#/definitions/policyDeadlineType"
+          amountPercent:
+            description: "Cancellation fee expressed as a fixed amount, or percentage\
+              \ of/or room nights."
+            $ref: "#/definitions/policyAmountPercentType"
+          penaltyDescription:
+            type: "string"
+            description: "Text description of the Penalty in a given language."
+            minLength: 0
+            maxLength: 2000
+          offsetUnit:
+            $ref: "#/definitions/offsetUnitType"
+          formattedRule:
+            type: "string"
+            description: "Formatted Text Rule of the Cancellation Penalty."
+            minLength: 0
+            maxLength: 2000
+          policyCode:
+            type: "string"
+            description: "Policy Code."
+            minLength: 0
+            maxLength: 20
+          manual:
+            type: "boolean"
+            description: "Flag to indicate if the cancellation policy is manual."
+          nonRefundable:
+            type: "boolean"
+            description: "Indicates if the amount is refundable if booking is canceled."
+          effective:
+            type: "boolean"
+            description: "Indicator if Cancellation Penalty is currently applicable\
+              \ or not."
+          estimatedAmount:
+            type: "number"
+            description: "Message."
+      depositPolicy:
+        type: "object"
+        description: "A deposit policy attached with the reservation."
+        properties:
+          revenueType:
+            description: "Type of reservation."
+            $ref: "#/definitions/depositCancelRevenueType"
+          policy:
+            description: "Reservation deposit policy details."
+            $ref: "#/definitions/depositPolicyType"
+          comments:
+            type: "string"
+            description: "Comments attached with a deposit."
+            minLength: 0
+            maxLength: 2000
+          amountPaid:
+            description: "Total amount paid against the reservation deposit."
+            $ref: "#/definitions/currencyAmountType"
+          amountDue:
+            description: "Total amount due against the reservation deposit."
+            $ref: "#/definitions/currencyAmountType"
+          policyId:
+            description: "Unique ID of the Reservation Policy."
+            $ref: "#/definitions/uniqueID_Type"
+          estimatedAmount:
+            type: "number"
+            description: "Message."
+      defaultGuarantee:
+        type: "boolean"
+        description: "If true indicates this can be the default guarantee type to\
+          \ be selected for a reservation."
+      warnings:
+        $ref: "#/definitions/warningsType"
+    description: "Specifies Guarantee Code attributes."
+  translationTextType80:
+    type: "object"
+    properties:
+      defaultText:
+        type: "string"
+        description: "Default text with Character length from 0 to 80."
+        minLength: 0
+        maxLength: 80
+      translatedTexts:
+        description: "List of translated text and language codes."
+        $ref: "#/definitions/translationsTextType"
+    description: "Contains Multiple translated texts and language codes."
+  translationsTextType:
+    type: "array"
+    description: "Language code for the translation."
+    items:
+      type: "object"
+      description: "Language code for the translation."
+      properties:
+        value:
+          type: "string"
+          description: "Used for Character Strings, length 0 to 2000."
+          minLength: 0
+          maxLength: 2000
+        language:
+          type: "string"
+          description: "Language identification."
+          pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
+    maxItems: 4000
+  guaranteeRequirementsType:
+    type: "object"
+    properties:
+      requirementCode:
+        type: "string"
+        description: "Requirement Code."
+        maxLength: 2000
+      cancellation:
+        type: "boolean"
+        description: "When true indicates cancellation on the reservation is required\
+          \ for this guarantee code."
+      phoneNumber:
+        type: "boolean"
+        description: "When true indicates phone number on the reservation is required\
+          \ for this guarantee code."
+      address:
+        type: "boolean"
+        description: "When true indicates address on the reservation is required for\
+          \ this guarantee code."
+      creditCard:
+        type: "boolean"
+        description: "When true indicates Credit Card on the reservation is required\
+          \ for this guarantee code."
+      arrivalTime:
+        type: "boolean"
+        description: "When true indicates arrival Time on the reservation is required\
+          \ for this guarantee code."
+      deposit:
+        type: "boolean"
+        description: "When true indicates deposit is required for this guarantee code."
+    description: "Specifies various requirement for the guarantee code."
+  paymentTypesType:
+    type: "array"
+    description: "Payment card code like AX,VI etc."
+    items:
+      type: "string"
+      minLength: 0
+      maxLength: 20
+    maxItems: 4000
+  policyDeadlineType:
+    type: "object"
+    properties:
+      absoluteDeadline:
+        type: "string"
+        format: "date-time"
+        description: "Defines the absolute deadline. Either this or the offset attributes\
+          \ may be used."
+      offsetFromArrival:
+        type: "integer"
+        description: "The number of days before arrival that allows cancellation without\
+          \ penalties."
+      offsetDropTime:
+        type: "string"
+        format: "date-time"
+        description: "Time on offset day the cancellation penalties applies."
+      offsetFromBookingDate:
+        type: "integer"
+        description: "The number of days after booking deposit must be paid."
+    description: "Cancellation deadline, absolute or relative."
+  policyAmountPercentType:
+    type: "object"
+    properties:
+      basisType:
+        description: "Provides the basis for how the amount of the guarantee is calculated."
+        $ref: "#/definitions/policyBasisTypeType"
+      nights:
+        type: "integer"
+        description: "The number of nights of the hotel stay that are used to calculate\
+          \ the fee amount."
+      percent:
+        type: "number"
+        description: "The percentage used to calculate the amount."
+        minimum: 0
+        maximum: 100
+      amount:
+        type: "number"
+        description: "A monetary amount."
+      currencyCode:
+        type: "string"
+        description: "Provides a currency code to reflect the currency in which an\
+          \ amount may be expressed."
+        minLength: 3
+        maxLength: 3
+    description: "Defines the percentage basis for calculating the fee amount or the\
+      \ amount."
+  policyBasisTypeType:
     type: "string"
-    description: "Defines status in terms of time."
+    description: "Full Amount."
     enum:
-    - "Future"
-    - "Current"
-    - "Past"
+    - "FlatAmount"
+    - "Percentage"
+    - "Nights"
+    - "NightPercentage"
+    - "FullAmount"
+  offsetUnitType:
+    type: "string"
+    description: "Indicates deadline offset unit type."
+    enum:
+    - "Year"
+    - "Month"
+    - "Day"
+    - "Hour"
+  depositCancelRevenueType:
+    type: "string"
+    description: "The type to indicate what revenue is to be used for calculating\
+      \ deposit/cancellation amounts."
+    enum:
+    - "Rooms"
+    - "Catering"
+    - "All"
+  depositPolicyType:
+    type: "object"
+    properties:
+      amountPercent:
+        description: "Payment expressed as a fixed amount, or a percentage of/or room\
+          \ nights."
+        $ref: "#/definitions/policyAmountPercentType"
+      deadline:
+        description: "Payment deadline, absolute or relative."
+        $ref: "#/definitions/policyDeadlineType"
+      description:
+        type: "string"
+        description: "Text description of the Payment in a given language."
+        minLength: 0
+        maxLength: 2000
+      depositReceiptNo:
+        type: "integer"
+        description: "Receipt number associated with the deposit policy"
+      transactionDate:
+        type: "string"
+        format: "date"
+        description: "Transaction Date associated with the deposit policy"
+      depositReqReversed:
+        type: "boolean"
+        description: "Flag to indicate if deposit policy is reversed"
+      formattedRule:
+        type: "string"
+        description: "Formatted Text Rule of the deposit policy."
+        minLength: 0
+        maxLength: 2000
+      typeOfCharges:
+        description: "Defines if the deposit amount is calculated based on Room Charges,\
+          \ Catering Charges or both"
+        $ref: "#/definitions/depositCancelRevenueType"
+      policyCode:
+        type: "string"
+        description: "Deposit Policy Code"
+        minLength: 0
+        maxLength: 20
+      manual:
+        type: "boolean"
+        description: "Flag to indicate if the cancellation policy is manual."
+    description: "Used to define the deposit policy, guarantees policy, and/or accepted\
+      \ forms of payment."
+  currencyAmountType:
+    type: "object"
+    properties:
+      amount:
+        type: "number"
+        description: "A monetary amount."
+      currencyCode:
+        type: "string"
+        description: "Provides a currency code to reflect the currency in which an\
+          \ amount may be expressed."
+        minLength: 3
+        maxLength: 3
+    description: "A monetary value expressed with a currency code."
+  uniqueID_Type:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "A unique identifying value assigned by the creating system.\
+          \ The ID attribute may be used to reference a primary-key value within a\
+          \ database or in a particular implementation."
+        minLength: 0
+        maxLength: 80
+      type:
+        type: "string"
+        description: "A reference to the type of object defined by the UniqueID element."
+        minLength: 0
+        maxLength: 20
+    description: "An identifier used to uniquely reference an object in a system (e.g.\
+      \ an airline reservation reference, customer profile reference, booking confirmation\
+      \ number, or a reference to a previous availability quote)."
+  warningsType:
+    type: "array"
+    description: "Used in conjunction with the Success element to define a business\
+      \ error."
+    items:
+      $ref: "#/definitions/warningType"
+    maxItems: 4000
+  warningType:
+    type: "object"
+    properties:
+      value:
+        type: "string"
+        description: "Property Value"
+      shortText:
+        type: "string"
+        description: "An abbreviated version of the error in textual format."
+        maxLength: 2000
+      code:
+        type: "string"
+        description: "If present, this refers to a table of coded values exchanged\
+          \ between applications to identify errors or warnings."
+        minLength: 0
+        maxLength: 20
+      docURL:
+        type: "string"
+        description: "If present, this URL refers to an online description of the\
+          \ error that occurred."
+        maxLength: 2000
+      status:
+        type: "string"
+        description: "If present, recommended values are those enumerated in the ErrorRS,\
+          \ (NotProcessed Incomplete Complete Unknown) however, the data type is designated\
+          \ as string data, recognizing that trading partners may identify additional\
+          \ status conditions not included in the enumeration."
+        maxLength: 2000
+      tag:
+        type: "string"
+        description: "If present, this attribute may identify an unknown or misspelled\
+          \ tag that caused an error in processing. It is recommended that the Tag\
+          \ attribute use XPath notation to identify the location of a tag in the\
+          \ event that more than one tag of the same name is present in the document.\
+          \ Alternatively, the tag name alone can be used to identify missing data\
+          \ [Type=ReqFieldMissing]."
+        maxLength: 2000
+      recordId:
+        type: "string"
+        description: "If present, this attribute allows for batch processing and the\
+          \ identification of the record that failed amongst a group of records. This\
+          \ value may contain a concatenation of a unique failed transaction ID with\
+          \ specific record(s) associated with that transaction."
+        maxLength: 2000
+      type:
+        type: "string"
+        description: "The Warning element MUST contain the Type attribute that uses\
+          \ a recommended set of values to indicate the warning type. The validating\
+          \ XSD can expect to accept values that it has NOT been explicitly coded\
+          \ for and process them by using Type =\"Unknown\"."
+        minLength: 0
+        maxLength: 20
+      language:
+        type: "string"
+        description: "Language identification."
+        pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
+      rph:
+        type: "string"
+        description: "Reference Place Holder used as an index for this warning."
+        minLength: 1
+        maxLength: 8
+    description: "Used when a message has been successfully processed to report any\
+      \ warnings or business errors that occurred."
+  links:
+    type: "array"
+    items:
+      $ref: "#/definitions/instanceLink"
+  instanceLink:
+    type: "object"
+    required:
+    - "href"
+    - "method"
+    - "operationId"
+    - "rel"
+    properties:
+      href:
+        type: "string"
+        description: "URI [RFC3986] or URI Template [RFC6570]. If the value is set\
+          \ to URI Template, then the \"templated\" property must be set to true."
+      rel:
+        type: "string"
+        description: "Name of the link relation that, in addition to the type property,\
+          \ can be used to retrieve link details. For example, href or profile."
+      templated:
+        type: "boolean"
+        description: "Boolean flag that specifies that \"href\" property is a URI\
+          \ or URI Template. If the property is a URI template, set this value to\
+          \ true. By default, this value is false."
+        default: false
+      method:
+        type: "string"
+        description: "HTTP method for requesting the target of the link."
+        enum:
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+        - "PATCH"
+        - "OPTIONS"
+        - "HEAD"
+      targetSchema:
+        type: "string"
+        description: "Link to the metadata of the resource, such as JSON-schema, that\
+          \ describes the resource expected when dereferencing the target resource.."
+      operationId:
+        type: "string"
+        description: "The operationId of the path you can call to follow this link.\
+          \  This allows you to look up not only the path and method, but the description\
+          \ of that path and any parameters you need to supply."
+      title:
+        type: "string"
+        description: "Exact copy of the \"summary\" field on the linked operation."
+    description: "Metadata describing link description objects that MAY appear in\
+      \ the JSON instance representation."
   exceptionDetailType:
     type: "object"
     required:
@@ -312,57 +795,6 @@ definitions:
         description: "Path to the problem at the resource or property level."
     title: "Error Instance Details"
     description: "Complex type that contains error instance details for a REST call."
-  links:
-    type: "array"
-    items:
-      $ref: "#/definitions/instanceLink"
-  instanceLink:
-    type: "object"
-    required:
-    - "href"
-    - "method"
-    - "operationId"
-    - "rel"
-    properties:
-      href:
-        type: "string"
-        description: "URI [RFC3986] or URI Template [RFC6570]. If the value is set\
-          \ to URI Template, then the \"templated\" property must be set to true."
-      rel:
-        type: "string"
-        description: "Name of the link relation that, in addition to the type property,\
-          \ can be used to retrieve link details. For example, href or profile."
-      templated:
-        type: "boolean"
-        description: "Boolean flag that specifies that \"href\" property is a URI\
-          \ or URI Template. If the property is a URI template, set this value to\
-          \ true. By default, this value is false."
-        default: false
-      method:
-        type: "string"
-        description: "HTTP method for requesting the target of the link."
-        enum:
-        - "GET"
-        - "POST"
-        - "PUT"
-        - "DELETE"
-        - "PATCH"
-        - "OPTIONS"
-        - "HEAD"
-      targetSchema:
-        type: "string"
-        description: "Link to the metadata of the resource, such as JSON-schema, that\
-          \ describes the resource expected when dereferencing the target resource.."
-      operationId:
-        type: "string"
-        description: "The operationId of the path you can call to follow this link.\
-          \  This allows you to look up not only the path and method, but the description\
-          \ of that path and any parameters you need to supply."
-      title:
-        type: "string"
-        description: "Exact copy of the \"summary\" field on the linked operation."
-    description: "Metadata describing link description objects that MAY appear in\
-      \ the JSON instance representation."
 parameters:
   authKey:
     name: "authorization"
