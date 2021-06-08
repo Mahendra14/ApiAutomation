@@ -1,102 +1,142 @@
 ---
 swagger: "2.0"
 info:
-  description: "APIs to cater Inventory related asynchronous functionality in OPERA.\
-    \ <p>This document and all content within is available under the Universal Permissive\
-    \ License v 1.0 (http://oss.oracle.com/licenses/upl). Copyright c 2021 Oracle\
-    \ and/or its affiliates.</p>"
-  version: "20.99.99.99"
-  title: "Early Release Opera Cloud Inventory Asynchronous API"
-basePath: "/inv/async/v0"
+  description: "APIs to cater for Master Data Configuration for Front Office Operations\
+    \ in OPERA Cloud.<br /><br /><p>This document and all content within is available\
+    \ under the Universal Permissive License v 1.0 (http://oss.oracle.com/licenses/upl).\
+    \ Copyright c 2021 Oracle and/or its affiliates.</p>"
+  version: "21.1"
+  title: "Early Release OPERA Cloud Front Desk Master Data Management API"
+  termsOfService: "https://www.oracle.com/legal/terms.html"
+  contact:
+    email: "hospitality_apis_ww_grp@oracle.com"
+  license:
+    name: "UPL"
+    url: "https://opensource.org/licenses/upl"
+basePath: "/fof/config/v0"
 tags:
-- name: "InventoryAsync"
-  description: "The Inventory Asynchronous module provides capability for an external\
-    \ system to retrieve inventory related data using an asynchronous approach."
+- name: "CashieringConfig"
+  description: "Cashiering configurations affect the control and management of financial\
+    \ transactions at your property. You can configure cashiering components for articles\
+    \ for sale, cancellation handling, deposits, folios, settlements, exchange rates,\
+    \ payment methods and so on."
 schemes:
 - "https"
 produces:
 - "application/json"
 paths:
-  /externalSystems/{extSystemCode}/hotels/{hotelId}/revenueInventoryStatistics:
-    post:
-      tags:
-      - "InventoryAsync"
-      summary: "This API facilitates fetching revenue inventory statistics for a Hotel\
-        \ by given dates."
-      description: " <p><strong>OperationId:</strong>startRevenueInventoryStatisticsProcess</p>"
-      operationId: "startRevenueInventoryStatisticsProcess"
-      parameters:
-      - name: "extSystemCode"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "hotelId"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - in: "body"
-        name: "criteria"
-        description: "Request object for fetching revenue inventory statistics asynchronously."
-        required: true
-        schema:
-          $ref: "#/definitions/revenueInventoryStatisticsSearchType"
-      - $ref: "#/parameters/authKey"
-      - $ref: "#/parameters/x-app-key"
-      - $ref: "#/parameters/x-hotelid"
-      - $ref: "#/parameters/Accept-Language"
-      responses:
-        "202":
-          description: "Location of process status resource"
-          headers:
-            Content-Language:
-              type: "string"
-              description: "Audience language"
-              pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
-              x-example: "en-GB"
-            Location:
-              type: "string"
-              description: "Location of process status resource"
-      x-interaction:
-      - "async-polling"
-    parameters: []
-  /externalSystems/{extSystemCode}/hotels/{hotelId}/revenueInventoryStatistics/{requestId}:
+  /hotels/{hotelId}/exchangeRates/{currencyCode}:
     get:
       tags:
-      - "InventoryAsync"
-      summary: "This API returns a hotel's revenue inventory statistics for a scheduled\
-        \ process."
-      description: " <p><strong>OperationId:</strong>getRevenueInventoryStatistics</p>"
-      operationId: "getRevenueInventoryStatistics"
+      - "CashieringConfig"
+      summary: "Operation to fetch FuturePastExchangeRates."
+      description: "Operation to Fetch Future Past Exchange Rates. <p><strong>OperationId:</strong>getFuturePastExchangeRates</p>"
+      operationId: "getFuturePastExchangeRates"
       parameters:
-      - name: "requestId"
+      - name: "currencyCode"
         in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "extSystemCode"
-        in: "path"
+        description: "Currency Code in OPERA"
         required: true
         type: "string"
         maxLength: 2000
         minLength: 1
       - name: "hotelId"
         in: "path"
+        description: "Unique ID of the hotel in OPERA"
         required: true
         type: "string"
         maxLength: 2000
         minLength: 1
-      - $ref: "#/parameters/authKey"
-      - $ref: "#/parameters/x-app-key"
-      - $ref: "#/parameters/x-hotelid"
-      - $ref: "#/parameters/Accept-Language"
+      - name: "exchangeTypes"
+        in: "query"
+        description: "E-certificate conversion."
+        required: true
+        type: "string"
+        uniqueItems: true
+        enum:
+        - "Cash"
+        - "Settlement"
+        - "Posting"
+        - "Check"
+        - "TACommission"
+        - "Membership"
+        - "Certificate"
+        x-example: "Cash"
+      - name: "dateRangeStart"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date"
+      - name: "dateRangeEnd"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date"
+      - name: "authorization"
+        in: "header"
+        description: "Bearer token that needs to be passed which is generated post\
+          \ user authentication"
+        required: true
+        type: "string"
+      - name: "x-app-key"
+        in: "header"
+        description: "Client or Partner’s Application Key"
+        required: true
+        type: "string"
+        pattern: "^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}$"
+      - name: "x-hotelid"
+        in: "header"
+        description: "Mandatory parameter to identify the hotel code where the end\
+          \ user is logged in"
+        required: true
+        type: "string"
+      - name: "x-externalsystem"
+        in: "header"
+        description: "External system code."
+        required: false
+        type: "string"
+        maxLength: 80
+        x-example: ""
+      - name: "Accept-Language"
+        in: "header"
+        description: "Language code"
+        required: false
+        type: "string"
       responses:
         "200":
-          description: "Response for fetched revenue inventory statistics."
+          description: "Collection of exchange rates and their information."
+          examples:
+            application/json:
+            - exchangeType:
+              - "Cash"
+              currency:
+                code: "AUD"
+              baseCurrency:
+                code: "USD"
+              beginDate: "2020-09-01"
+              buyRate: "1"
+              buyCommission: "0"
+              status: "Future"
+            - exchangeType:
+              - "Cash"
+              currency:
+                code: "AUD"
+              baseCurrency:
+                code: "USD"
+              beginDate: "2020-01-01 00:28:45.0"
+              buyRate: "1.34"
+              buyCommission: "0"
+              status: "Current"
+            - exchangeType:
+              - "Cash"
+              currency:
+                code: "AUD"
+              baseCurrency:
+                code: "USD"
+              beginDate: "2016-09-01 13:04:40.0"
+              buyRate: "5"
+              buyCommission: "5"
+              status: "Past"
           headers:
             Content-Language:
               type: "string"
@@ -104,234 +144,99 @@ paths:
               pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
               x-example: "en-GB"
           schema:
-            $ref: "#/definitions/revenueInventoryStatisticsDetails"
-    head:
-      tags:
-      - "InventoryAsync"
-      summary: "This API returns the status of asynchronous process scheduled for\
-        \ given request id."
-      description: " <p><strong>OperationId:</strong>getRevenueInventoryStatisticsProcessStatus</p>"
-      operationId: "getRevenueInventoryStatisticsProcessStatus"
-      parameters:
-      - name: "requestId"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "extSystemCode"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "hotelId"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - $ref: "#/parameters/authKey"
-      - $ref: "#/parameters/x-app-key"
-      - $ref: "#/parameters/x-hotelid"
-      - $ref: "#/parameters/Accept-Language"
-      responses:
-        "200":
-          description: "Response for status of scheduled asynchronous process."
-          headers:
-            Content-Language:
-              type: "string"
-              description: "Audience language"
-              pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
-              x-example: "en-GB"
-            Status:
-              type: "string"
-              description: "Status of the requested process."
-              enum:
-              - "Processing"
-              - "Invalid"
-            Cache-Control:
-              type: "string"
-              description: "number of seconds to wait before polling again."
-              x-example: "max-age=10"
-        "201":
-          description: "Response for status of scheduled asynchronous process."
-          headers:
-            Content-Language:
-              type: "string"
-              description: "Audience language"
-              pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
-              x-example: "en-GB"
-            Status:
-              type: "string"
-              description: "Status of the requested process."
-              enum:
-              - "Completed"
-            Location:
-              type: "string"
-              description: "Location of newly created resource once the status of\
-                \ process run is Complete."
-    parameters: []
-  /externalSystems/{extSystemCode}/hotels/{hotelId}/sellLimits:
-    post:
-      tags:
-      - "InventoryAsync"
-      summary: "Create sell limit by date."
-      description: "You can use this API to create sell limits in OPERA by date. <p><strong>OperationId:</strong>postSellLimitsProcess</p>"
-      operationId: "postSellLimitsProcess"
-      parameters:
-      - name: "hotelId"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "extSystemCode"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - in: "body"
-        name: "sellLimitsByDate"
-        description: "Request for setting sell limits for house, room type, room class."
-        required: true
-        schema:
-          $ref: "#/definitions/sellLimitsByDate"
-      - $ref: "#/parameters/authKey"
-      - $ref: "#/parameters/x-app-key"
-      - $ref: "#/parameters/x-hotelid"
-      - $ref: "#/parameters/Accept-Language"
-      responses:
-        "202":
-          description: "Location of process status resource"
-          headers:
-            Content-Language:
-              type: "string"
-              description: "Audience language"
-              pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
-              x-example: "en-GB"
-            Location:
-              type: "string"
-              description: "Location of process status resource"
-      x-interaction:
-      - "async-polling"
-    parameters: []
-  /externalSystems/{extSystemCode}/hotels/{hotelId}/sellLimits/{requestId}:
-    get:
-      tags:
-      - "InventoryAsync"
-      summary: "Get status for sell limits for a property."
-      description: " <p><strong>OperationId:</strong>getSellLimits</p>"
-      operationId: "getSellLimits"
-      parameters:
-      - name: "requestId"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "hotelId"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "extSystemCode"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - $ref: "#/parameters/authKey"
-      - $ref: "#/parameters/x-app-key"
-      - $ref: "#/parameters/x-hotelid"
-      - $ref: "#/parameters/Accept-Language"
-      responses:
-        "200":
-          description: "This asynchronous callback base type is used as a base for\
-            \ an extension for Opera Web Services Callback Requests to provide uniform\
-            \ implementation."
-          headers:
-            Content-Language:
-              type: "string"
-              description: "Audience language"
-              pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
-              x-example: "en-GB"
-          schema:
-            $ref: "#/definitions/sellLimitByDateStatus"
+            $ref: "#/definitions/futurePastExchangeRates"
         "204":
-          description: "SetSellLimitByDate not found."
-    head:
-      tags:
-      - "InventoryAsync"
-      summary: "This API returns the status of asynchronous process scheduled for\
-        \ given id."
-      description: " <p><strong>OperationId:</strong>getSellLimitsProcessStatus</p>"
-      operationId: "getSellLimitsProcessStatus"
-      parameters:
-      - name: "requestId"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "extSystemCode"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - name: "hotelId"
-        in: "path"
-        required: true
-        type: "string"
-        maxLength: 2000
-        minLength: 1
-      - $ref: "#/parameters/authKey"
-      - $ref: "#/parameters/x-app-key"
-      - $ref: "#/parameters/x-hotelid"
-      - $ref: "#/parameters/Accept-Language"
-      responses:
-        "200":
-          description: "Response for status of scheduled asynchronous process."
-          headers:
-            Content-Language:
-              type: "string"
-              description: "Audience language"
-              pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
-              x-example: "en-GB"
-            Status:
-              type: "string"
-              description: "Status of the requested process."
-              enum:
-              - "Processing"
-              - "Invalid"
-            Cache-Control:
-              type: "string"
-              description: "number of seconds to wait before polling again."
-              x-example: "max-age=10"
-        "201":
-          description: "Response for status of scheduled asynchronous process."
-          headers:
-            Content-Language:
-              type: "string"
-              description: "Audience language"
-              pattern: "[a-zA-Z]{1,8}(-[a-zA-Z0-9]{1,8})*"
-              x-example: "en-GB"
-            Status:
-              type: "string"
-              description: "Status of the requested process."
-              enum:
-              - "Completed"
-            Location:
-              type: "string"
-              description: "Location of newly created resource once the status of\
-                \ process run is Complete."
-    parameters: []
+          description: "FuturePastExchangeRates not found."
 definitions:
+  futurePastExchangeRates:
+    type: "array"
+    description: "Collection of exchange rates and their information."
+    items:
+      $ref: "#/definitions/exchangeRateType"
+    maxItems: 4000
+  exchangeRateType:
+    type: "object"
+    properties:
+      hotelId:
+        type: "string"
+        description: "Property where exchange rate is set."
+        minLength: 0
+        maxLength: 20
+      exchangeType:
+        type: "array"
+        description: "Type for exchange calculation."
+        items:
+          $ref: "#/definitions/currencyExchangeType"
+        maxItems: 4000
+      currency:
+        description: "Currency code."
+        $ref: "#/definitions/codeDescriptionType"
+      baseCurrency:
+        description: "Exchange rate base currency."
+        $ref: "#/definitions/codeDescriptionType"
+      beginDate:
+        type: "string"
+        format: "date-time"
+        description: "Date on which the rate is to become active."
+      buyRate:
+        type: "number"
+        description: "Buy Rate for foreign currency."
+      buyCommission:
+        type: "number"
+        description: "Percentage of the amount that is to be a commission for the\
+          \ currency buy operation."
+      sellRate:
+        type: "number"
+        description: "Sell Rate for foreign currency."
+      sellCommission:
+        type: "number"
+        description: "Percentage of the amount that is to be a commission for the\
+          \ currency sell operation."
+      comment:
+        type: "string"
+        description: "Comments associated with the exchange rate."
+        maxLength: 2000
+      status:
+        description: "Status past, present, or future."
+        $ref: "#/definitions/statusTypes"
+    description: "Exchange rate configuration type."
+  currencyExchangeType:
+    type: "string"
+    description: "E-certificate conversion."
+    enum:
+    - "Cash"
+    - "Settlement"
+    - "Posting"
+    - "Check"
+    - "TACommission"
+    - "Membership"
+    - "Certificate"
+  codeDescriptionType:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+        description: "Code."
+        minLength: 0
+        maxLength: 20
+      description:
+        type: "string"
+        description: "description."
+        minLength: 0
+        maxLength: 2000
+    description: "This contains a generic code and description information."
+  statusTypes:
+    type: "string"
+    description: "Defines status in terms of time."
+    enum:
+    - "Future"
+    - "Current"
+    - "Past"
   exceptionDetailType:
     type: "object"
+    required:
+    - "title"
+    - "type"
     properties:
       type:
         type: "string"
@@ -373,6 +278,9 @@ definitions:
     description: "Complex type that contains error details for a REST call."
   errorInstance:
     type: "object"
+    required:
+    - "title"
+    - "type"
     properties:
       type:
         type: "string"
@@ -404,8 +312,17 @@ definitions:
         description: "Path to the problem at the resource or property level."
     title: "Error Instance Details"
     description: "Complex type that contains error instance details for a REST call."
+  links:
+    type: "array"
+    items:
+      $ref: "#/definitions/instanceLink"
   instanceLink:
     type: "object"
+    required:
+    - "href"
+    - "method"
+    - "operationId"
+    - "rel"
     properties:
       href:
         type: "string"
@@ -446,287 +363,6 @@ definitions:
         description: "Exact copy of the \"summary\" field on the linked operation."
     description: "Metadata describing link description objects that MAY appear in\
       \ the JSON instance representation."
-  links:
-    type: "array"
-    items:
-      $ref: "#/definitions/instanceLink"
-  revenueInventoryStatisticsSearchType:
-    type: "object"
-    properties:
-      dateRangeStart:
-        type: "string"
-        format: "date"
-        description: "The starting value of the date range."
-      dateRangeEnd:
-        type: "string"
-        format: "date"
-        description: "The ending value of the date range."
-      roomTypes:
-        type: "array"
-        description: "The optional room types by which revenue and inventory statistics\
-          \ will be grouped."
-        items:
-          type: "string"
-          minLength: 0
-          maxLength: 20
-        maxItems: 4000
-      marketCodes:
-        type: "array"
-        description: "The market codes for which revenue and inventory statistics\
-          \ will be gathered."
-        items:
-          type: "string"
-          minLength: 0
-          maxLength: 20
-        maxItems: 4000
-      guaranteeCodes:
-        type: "array"
-        description: "The reservation guarantee codes for which revenue and inventory\
-          \ statistics will be gathered."
-        items:
-          type: "string"
-          minLength: 0
-          maxLength: 20
-        maxItems: 4000
-      groupBy:
-        type: "array"
-        description: "Group by instructions for revenue inventory statistics that\
-          \ can be used in request operation. Response data will be grouped according\
-          \ to the values provided in this array. MarketCode and RoomType grouping\
-          \ is used for past and future revenue and inventory statistics while GuaranteeType\
-          \ is used only for future revenue and inventory statistics."
-        uniqueItems: true
-        items:
-          type: "string"
-          enum:
-          - "MarketCode"
-          - "RoomType"
-          - "GuaranteeType"
-    description: "Fetch criteria type for fetching revenue inventory statistics."
-  revenueInventoryStatisticsDetails:
-    type: "array"
-    description: "Revenue Inventory Statistics for the current occupancy date which\
-      \ might include data grouped by room type, market and reservation guarantee\
-      \ code."
-    items:
-      $ref: "#/definitions/revenueInventoryStatisticsType"
-    maxItems: 4000
-  revenueInventoryStatisticsType:
-    type: "object"
-    properties:
-      physicalRooms:
-        type: "integer"
-        description: "The statistical figure for physical rooms."
-      outOfOrderRooms:
-        type: "integer"
-        description: "The statistical figure for out of order rooms."
-      outOfServiceRooms:
-        type: "integer"
-        description: "The statistical figure for out of service rooms."
-      roomsSold:
-        type: "integer"
-        description: "The statistical figure for rooms sold."
-      roomArrivals:
-        type: "integer"
-        description: "The statistical figure for arrival rooms."
-      roomDepartures:
-        type: "integer"
-        description: "The statistical figure of departure rooms."
-      cancelledRooms:
-        type: "integer"
-        description: "The statistical figure for canceled rooms."
-      noShowRooms:
-        type: "integer"
-        description: "The statistical figure of no show rooms."
-      roomRevenue:
-        type: "number"
-        description: "The statistical figure for room revenue."
-      foodRevenue:
-        type: "number"
-        description: "The statistical figure for food revenue."
-      totalRevenue:
-        type: "number"
-        description: "The statistical figure for total revenue."
-      occupancyDate:
-        type: "string"
-        format: "date"
-        description: "The occupancy date for which the revenue inventory statistics\
-          \ are fetched."
-      marketCode:
-        type: "string"
-        description: "The market code for which the revenue inventory statistics are\
-          \ fetched."
-        minLength: 0
-        maxLength: 20
-      roomType:
-        type: "string"
-        description: "The room type for which the revenue inventory statistics are\
-          \ fetched."
-        minLength: 0
-        maxLength: 20
-      guaranteeCode:
-        type: "string"
-        description: "The reservation guarantee code for which the revenue inventory\
-          \ statistics are fetched."
-        minLength: 0
-        maxLength: 20
-    description: "Revenue and statistics for an occupancy date and hotel code."
-  warningsType:
-    type: "array"
-    description: "Used in conjunction with the Success element to define a business\
-      \ error."
-    items:
-      $ref: "#/definitions/warningType"
-    maxItems: 4000
-  warningType:
-    type: "object"
-    properties:
-      value:
-        type: "string"
-        description: "Property Value"
-      shortText:
-        type: "string"
-        description: "An abbreviated version of the error in textual format."
-        maxLength: 2000
-      code:
-        type: "string"
-        description: "If present, this refers to a table of coded values exchanged\
-          \ between applications to identify errors or warnings."
-        minLength: 0
-        maxLength: 20
-      docURL:
-        type: "string"
-        description: "If present, this URL refers to an online description of the\
-          \ error that occurred."
-        maxLength: 2000
-      status:
-        type: "string"
-        description: "If present, recommended values are those enumerated in the ErrorRS,\
-          \ (NotProcessed Incomplete Complete Unknown) however, the data type is designated\
-          \ as string data, recognizing that trading partners may identify additional\
-          \ status conditions not included in the enumeration."
-        maxLength: 2000
-      tag:
-        type: "string"
-        description: "If present, this attribute may identify an unknown or misspelled\
-          \ tag that caused an error in processing. It is recommended that the Tag\
-          \ attribute use XPath notation to identify the location of a tag in the\
-          \ event that more than one tag of the same name is present in the document.\
-          \ Alternatively, the tag name alone can be used to identify missing data\
-          \ [Type=ReqFieldMissing]."
-        maxLength: 2000
-      recordId:
-        type: "string"
-        description: "If present, this attribute allows for batch processing and the\
-          \ identification of the record that failed amongst a group of records. This\
-          \ value may contain a concatenation of a unique failed transaction ID with\
-          \ specific record(s) associated with that transaction."
-        maxLength: 2000
-      type:
-        type: "string"
-        description: "The Warning element MUST contain the Type attribute that uses\
-          \ a recommended set of values to indicate the warning type. The validating\
-          \ XSD can expect to accept values that it has NOT been explicitly coded\
-          \ for and process them by using Type =\"Unknown\"."
-        minLength: 0
-        maxLength: 20
-      language:
-        type: "string"
-        description: "Language identification."
-      rph:
-        type: "string"
-        description: "Reference Place Holder used as an index for this warning."
-        minLength: 1
-        maxLength: 8
-    description: "Used when a message has been successfully processed to report any\
-      \ warnings or business errors that occurred."
-  sellLimitByDateStatus:
-    type: "object"
-    properties:
-      warnings:
-        description: "List of warnings that occurred."
-        $ref: "#/definitions/warningsType"
-      links:
-        $ref: "#/definitions/links"
-    description: "Response for sell limits status "
-  sellLimitsByDate:
-    type: "array"
-    description: "Request for setting sell limits for house, room type, room class."
-    items:
-      $ref: "#/definitions/sellLimitByDateType"
-    maxItems: 4000
-  sellLimitByDateType:
-    type: "object"
-    properties:
-      houseSellLimits:
-        type: "array"
-        description: "Collection of House level sell limit by the date."
-        items:
-          $ref: "#/definitions/houseSellLimitType"
-        maxItems: 4000
-      roomTypeSellLimits:
-        type: "array"
-        description: "Collection of Room type level sell limit by the date."
-        items:
-          $ref: "#/definitions/roomTypeSellLimitType"
-        maxItems: 4000
-      roomClassSellLimits:
-        type: "array"
-        description: "Collection of Room Class level sell limit by the date."
-        items:
-          $ref: "#/definitions/roomClassSellLimitType"
-        maxItems: 4000
-    description: "This type is used by sell limit request."
-  houseSellLimitType:
-    type: "object"
-    properties:
-      date:
-        type: "string"
-        format: "date"
-      amount:
-        type: "number"
-      flatOrPercentage:
-        type: "string"
-        description: "Indicates if sell limit is flat or percentage."
-        enum:
-        - "Flat"
-        - "Percentage"
-  roomClassSellLimitType:
-    type: "object"
-    properties:
-      date:
-        type: "string"
-        format: "date"
-      amount:
-        type: "number"
-      flatOrPercentage:
-        type: "string"
-        description: "Indicates if sell limit is flat or percentage."
-        enum:
-        - "Flat"
-        - "Percentage"
-      roomClass:
-        type: "string"
-        minLength: 0
-        maxLength: 20
-  roomTypeSellLimitType:
-    type: "object"
-    properties:
-      date:
-        type: "string"
-        format: "date"
-      amount:
-        type: "number"
-      flatOrPercentage:
-        type: "string"
-        description: "Indicates if sell limit is flat or percentage."
-        enum:
-        - "Flat"
-        - "Percentage"
-      roomType:
-        type: "string"
-        minLength: 0
-        maxLength: 20
 parameters:
   authKey:
     name: "authorization"
@@ -738,7 +374,7 @@ parameters:
   x-app-key:
     name: "x-app-key"
     in: "header"
-    description: "Client or Partner's Application Key"
+    description: "Client or Partner’s Application Key"
     required: true
     type: "string"
     pattern: "^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}$"
@@ -749,6 +385,14 @@ parameters:
       \ is logged in"
     required: true
     type: "string"
+  x-externalsystem:
+    name: "x-externalsystem"
+    in: "header"
+    description: "External system code."
+    required: false
+    type: "string"
+    maxLength: 80
+    x-example: ""
   Accept-Language:
     name: "Accept-Language"
     in: "header"
@@ -786,3 +430,6 @@ responses:
     description: "Bad Gateway"
   "503":
     description: "Service Unavailable"
+externalDocs:
+  description: "Find out more about Oracle Hospitality"
+  url: "https://docs.oracle.com/en/industries/hospitality/integration_platforms.html"
