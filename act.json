@@ -3,7 +3,7 @@
   "info" : {
     "description" : "APIs to cater for Sales Activity functionality in OPERA Cloud. <br /><br /> Activities provide you with an account management tool for managing daily tasks such as appointments, sales calls, contact follow-up, and so on.<br /><br /><p>Copyright c 2021 Oracle and/or its affiliates</p><p>The Universal Permissive License UPL, Version 1.0</p><p>Subject to the condition set forth below, permission is hereby granted to any person obtaining a copy of this software, associated documentation and/or data collectively the &#34;Software&#34;, free of charge and under any and all copyright rights in the Software, and any and all patent rights owned or freely licensable by each licensor hereunder covering either i the unmodified Software as contributed to or provided by such licensor, or ii the Larger Works as defined below, to deal in both</p><p>a the Software, and</p><p>b any piece of software and/or hardware listed in the lrgrwrks.txt file if one is included with the Software each a &#34;Larger Work&#34; to which the Software is contributed by such licensors,</p><p>without restriction, including without limitation the rights to copy, create derivative works of, display, perform, and distribute the Software and make, use, sell, offer for sale, import, export, have made, and have sold the Software and the Larger Works, and to sublicense the foregoing rights on either these or other terms.</p><p>This license is subject to the following condition:</p><p>The above copyright notice and either this complete permission notice or at a minimum a reference to the UPL must be included in all copies or substantial portions of the Software.</p><p>THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>",
     "version" : "21.1.1",
-    "title" : "Early Release OPERA Cloud Activity API",
+    "title" : "OPERA Cloud Activity API",
     "termsOfService" : "https://www.oracle.com/legal/terms.html",
     "contact" : {
       "email" : "hospitality_apis_ww_grp@oracle.com"
@@ -13,7 +13,7 @@
       "url" : "https://opensource.org/licenses/upl"
     }
   },
-  "basePath" : "/act/v0",
+  "basePath" : "/act/v1",
   "tags" : [ {
     "name" : "Activity",
     "description" : "The Activity REST APIs allow you to view, create, update, and complete an Activity in OPERA Cloud. You are also able to perform more actions such as add attachments."
@@ -27,6 +27,8 @@
         "summary" : "Get activities",
         "description" : "Use this API to retrieve activities for multiple hotels.  Results can be narrowed down by your search criteria in the request message. <p><strong>OperationId:</strong>getActivitiesByMultipleHotelIds</p>",
         "operationId" : "getActivitiesByMultipleHotelIds",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "name" : "completed",
           "in" : "query",
@@ -263,6 +265,51 @@
           },
           "204" : {
             "description" : "ActivitiesByMultipleHotelIds not found."
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       },
@@ -271,6 +318,8 @@
         "summary" : "Delete activities",
         "description" : "If you want to delete an activity, use this API.  You must know the activity ID for the request. <p><strong>OperationId:</strong>deleteMultipleActivities</p>",
         "operationId" : "deleteMultipleActivities",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "name" : "activityIds",
           "in" : "query",
@@ -333,6 +382,51 @@
             "schema" : {
               "$ref" : "#/definitions/status"
             }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       }
@@ -343,6 +437,8 @@
         "summary" : "Complete activities",
         "description" : "Use this API to mark multiple Activities as completed in 1 request.  You must know the OPERA Activity ID's for this API. <p><strong>OperationId:</strong>postMultipleActivitiesCompletion</p>",
         "operationId" : "postMultipleActivitiesCompletion",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "in" : "body",
           "name" : "activitiesToChange",
@@ -437,6 +533,51 @@
             "schema" : {
               "$ref" : "#/definitions/status"
             }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       }
@@ -447,6 +588,8 @@
         "summary" : "Get activities by hotel",
         "description" : "You can use this API to retrieve multiple Activities for a hotel, you can narrow the results using different search criteria  <p><strong>OperationId:</strong>getActivities</p>",
         "operationId" : "getActivities",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "name" : "hotelId",
           "in" : "path",
@@ -691,6 +834,51 @@
           },
           "204" : {
             "description" : "Activities not found."
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       },
@@ -699,6 +887,8 @@
         "summary" : "Create activities in a hotel",
         "description" : "Use postActivities to create a new activity for a hotel.  You would need to know the types of Activities a hotel accepts, such as Appointments, TODO.  Use ListOfValues API's to find the available types at a hotel. <p><strong>OperationId:</strong>postActivities</p>",
         "operationId" : "postActivities",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "name" : "hotelId",
           "in" : "path",
@@ -788,6 +978,51 @@
             "schema" : {
               "$ref" : "#/definitions/status"
             }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       }
@@ -798,6 +1033,8 @@
         "summary" : "Get activity in a hotel by ID",
         "description" : "You can use this API to retrieve an Activity for a hotel, using the OPERA Activity ID in the request. <p><strong>OperationId:</strong>getActivity</p>",
         "operationId" : "getActivity",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "name" : "activityId",
           "in" : "path",
@@ -1077,6 +1314,51 @@
           },
           "204" : {
             "description" : "Activity not found."
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       },
@@ -1085,6 +1367,8 @@
         "summary" : "Update activity in a hotel by ID",
         "description" : "Use this to update an existing Activity for a hotel.  You must know the OPERA Activity ID for this API. <p><strong>OperationId:</strong>putActivities</p>",
         "operationId" : "putActivities",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "name" : "activityId",
           "in" : "path",
@@ -1189,6 +1473,51 @@
             "schema" : {
               "$ref" : "#/definitions/status"
             }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       },
@@ -1197,6 +1526,8 @@
         "summary" : "Delete activity in a hotel by ID",
         "description" : "Use this API to mark an Activity as deleted.  You must know the OPERA Activity ID for this API. <p><strong>OperationId:</strong>deleteActivities</p>",
         "operationId" : "deleteActivities",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "name" : "activityId",
           "in" : "path",
@@ -1275,6 +1606,51 @@
             "schema" : {
               "$ref" : "#/definitions/status"
             }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       }
@@ -1285,6 +1661,8 @@
         "summary" : "Complete activity in a hotel by ID",
         "description" : "Use this API to mark one Activity as completed in 1 request.  You must know the OPERA Activity ID for this API. <p><strong>OperationId:</strong>postSingleActivityCompletion</p>",
         "operationId" : "postSingleActivityCompletion",
+        "consumes" : [ "application/json;charset=UTF-8" ],
+        "produces" : [ "application/json;charset=UTF-8" ],
         "parameters" : [ {
           "name" : "activityId",
           "in" : "path",
@@ -1377,6 +1755,51 @@
             "schema" : {
               "$ref" : "#/definitions/status"
             }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "403" : {
+            "description" : "Forbidden"
+          },
+          "404" : {
+            "description" : "Resource not found",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed"
+          },
+          "406" : {
+            "description" : "Not acceptable."
+          },
+          "413" : {
+            "description" : "Request Entity Too Large"
+          },
+          "414" : {
+            "description" : "Request URI Too Large"
+          },
+          "415" : {
+            "description" : "Unsupported Media Type"
+          },
+          "500" : {
+            "description" : "System Error",
+            "schema" : {
+              "$ref" : "#/definitions/exceptionDetailType"
+            }
+          },
+          "502" : {
+            "description" : "Bad Gateway"
+          },
+          "503" : {
+            "description" : "Service Unavailable"
           }
         }
       }
